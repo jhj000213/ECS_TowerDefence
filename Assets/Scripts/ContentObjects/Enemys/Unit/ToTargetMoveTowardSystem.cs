@@ -14,21 +14,18 @@ partial struct ToTargetMoveTowardSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        foreach (var transform in SystemAPI.Query<LocalTransform>().WithAll<MovePathCD, MoveCD, LocalTransform>())
+        CheckTargetPositionJob arrivedCheckJob = new CheckTargetPositionJob();
+
+        MoveTowardJob moveJob = new MoveTowardJob()
         {
-            CheckTargetPositionJob arrivedCheckJob = new CheckTargetPositionJob();
-
-            MoveTowardJob moveJob = new MoveTowardJob()
-            {
-                deltaTime = SystemAPI.Time.DeltaTime,
-            };
+            deltaTime = SystemAPI.Time.DeltaTime,
+        };
 
 
-            JobHandle arriveHandle = arrivedCheckJob.ScheduleParallel(state.Dependency);
-            JobHandle moveHandle = moveJob.ScheduleParallel(arriveHandle);
+        JobHandle arriveHandle = arrivedCheckJob.ScheduleParallel(state.Dependency);
+        JobHandle moveHandle = moveJob.ScheduleParallel(arriveHandle);
 
-            state.Dependency = moveHandle;
-        }
+        state.Dependency = moveHandle;
     }
 
     [BurstCompile]
