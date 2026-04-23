@@ -1,6 +1,6 @@
 using Unity.Entities;
 
-public struct EnemyPrefabsCD : IComponentData
+public struct EnemyPrefabsSCD : IComponentData
 {
     public Entity unitPrefab;
 }

@@ -16,18 +16,20 @@ class EnemySpawnerAuthoringBaker : Baker<EnemySpawnerAuthoring>
         var spawner = GetEntity(TransformUsageFlags.None);
 
 
-        EnemyPrefabsCD enemyPrefabsCD = new EnemyPrefabsCD
+        EnemyPrefabsSCD enemyPrefabsCD = new EnemyPrefabsSCD
         {
             unitPrefab = GetEntity(authoring.enemyPrefab_, TransformUsageFlags.Dynamic),
         };
 
         Transform[] arrPosition = authoring.enemyMovePathTransforms_;
-        EnemyMovePathCD movePathCD = new EnemyMovePathCD();
+        FixedList64Bytes<float3> position = new FixedList64Bytes<float3>();
 
         for (int i = 0; i < arrPosition.Length; ++i)
         {
-            movePathCD.positions.Add(new float3(arrPosition[i].position));
+            position.Add(new float3(arrPosition[i].position));
         }
+
+        MovePathCD movePathCD = new MovePathCD(position);
 
 
         AddComponent(spawner, enemyPrefabsCD);

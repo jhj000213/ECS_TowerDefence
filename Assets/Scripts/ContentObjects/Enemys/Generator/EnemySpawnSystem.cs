@@ -7,6 +7,7 @@ using UnityEngine;
 partial struct EnemySpawnSystem : ISystem
 {
     float elapsedTime;
+    const float spawnDelayTime = 1.0f;
 
     [BurstCompile]
     public void OnCreate(ref SystemState state)
@@ -17,18 +18,24 @@ partial struct EnemySpawnSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        elapsedTime += Time.deltaTime;
+        //elapsedTime += SystemAPI.Time.DeltaTime;
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space) || elapsedTime > spawnDelayTime)
         {
+
             var entityManager = state.EntityManager;
 
-            EnemyPrefabsCD enemyPrefabsCD = SystemAPI.GetSingleton<EnemyPrefabsCD>();
-            EnemyMovePathCD movePathCD = SystemAPI.GetSingleton<EnemyMovePathCD>();
+            var spawnerEntity = SystemAPI.GetSingletonEntity<EnemyPrefabsSCD>();
+            EnemyPrefabsSCD enemyPrefabsCD = entityManager.GetComponentData<EnemyPrefabsSCD>(spawnerEntity);
+            MovePathCD movePathCD = entityManager.GetComponentData<MovePathCD>(spawnerEntity);
 
             Entity newEntity = entityManager.Instantiate(enemyPrefabsCD.unitPrefab);
-            // 4. 생성된 엔티티의 초기 위치 설정 (예: 스포너의 위치)
-            state.EntityManager.SetComponentData(newEntity, LocalTransform.FromPosition(movePathCD.positions[0]));
+            entityManager.AddComponentData(newEntity, new MoveCD() { speed = 0.5f, });
+            entityManager.AddComponentData(newEntity, new MovePathCD(movePathCD.PositionList));
+            entityManager.SetComponentData(newEntity, LocalTransform.FromPosition(movePathCD[0]));
+
+            elapsedTime -= spawnDelayTime;
+
         }
 
 
