@@ -4,7 +4,7 @@ using Unity.Transforms;
 
 public partial struct CheckTargetPositionJob : IJobEntity
 {
-    public void Execute(in LocalTransform transform, in MovePathCD movePathCD)
+    public void Execute(in LocalTransform transform, ref MovePathCD movePathCD)
     {
         float3 nowPosition = transform.Position;
 

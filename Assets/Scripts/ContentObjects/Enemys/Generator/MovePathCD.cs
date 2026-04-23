@@ -47,12 +47,13 @@ public struct MovePathCD : IComponentData
 
     public void SetNext()
     {
+        JDebugLogger.Log("index1", nowIndex);
         nowIndex += 1;
         if (nowIndex >= positions.Length)
         {
             nowIndex = 0;
+            JDebugLogger.Log("index2", nowIndex);
         }
-        JDebugLogger.Log("index", nowIndex);
         JDebugLogger.Log("1", positions[0]);
         JDebugLogger.Log("2", positions[1]);
         JDebugLogger.Log("3", positions[2]);

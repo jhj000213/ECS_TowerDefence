@@ -26,8 +26,8 @@ partial struct EnemySpawnSystem : ISystem
             var entityManager = state.EntityManager;
 
             var spawnerEntity = SystemAPI.GetSingletonEntity<EnemyPrefabsSCD>();
-            EnemyPrefabsSCD enemyPrefabsCD = entityManager.GetComponentData<EnemyPrefabsSCD>(spawnerEntity);
-            MovePathCD movePathCD = entityManager.GetComponentData<MovePathCD>(spawnerEntity);
+            var enemyPrefabsCD = SystemAPI.GetComponentRW<EnemyPrefabsSCD>(spawnerEntity).ValueRO;
+            var movePathCD = SystemAPI.GetComponentRW<MovePathCD>(spawnerEntity).ValueRO;
 
             Entity newEntity = entityManager.Instantiate(enemyPrefabsCD.unitPrefab);
             entityManager.AddComponentData(newEntity, new MoveCD() { speed = 0.5f, });
