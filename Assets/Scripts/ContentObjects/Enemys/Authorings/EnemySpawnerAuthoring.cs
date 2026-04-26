@@ -6,6 +6,7 @@ using UnityEngine;
 class EnemySpawnerAuthoring : MonoBehaviour
 {
     public EnemyUnitAuthoring enemyPrefab_;
+    public Transform enemyParentTransform_;
     public Transform[] enemyMovePathTransforms_ = new Transform[4];
 }
 
@@ -19,6 +20,7 @@ class EnemySpawnerAuthoringBaker : Baker<EnemySpawnerAuthoring>
         EnemyPrefabsSCD enemyPrefabsCD = new EnemyPrefabsSCD
         {
             unitPrefab = GetEntity(authoring.enemyPrefab_, TransformUsageFlags.Dynamic),
+            parentEntity = GetEntity(authoring.enemyParentTransform_, TransformUsageFlags.Dynamic),
         };
 
         Transform[] arrPosition = authoring.enemyMovePathTransforms_;

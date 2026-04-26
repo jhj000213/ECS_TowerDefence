@@ -11,7 +11,6 @@ public struct MovePathCD : IComponentData
     {
         positions = positionList;
         nowIndex = 0;
-        JDebugLogger.Log("init");
     }
 
     public float3 this[int index]

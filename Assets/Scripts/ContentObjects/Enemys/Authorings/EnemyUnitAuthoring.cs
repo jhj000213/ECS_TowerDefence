@@ -10,6 +10,7 @@ class EnemyUnitAuthoringBaker : Baker<EnemyUnitAuthoring>
 {
     public override void Bake(EnemyUnitAuthoring authoring)
     {
+        JDebugLogger.Log("bake enemy");
         var enemyEntity = GetEntity(TransformUsageFlags.Dynamic);
 
         AddComponent(enemyEntity, new EnemyObjectCD 
@@ -17,6 +18,11 @@ class EnemyUnitAuthoringBaker : Baker<EnemyUnitAuthoring>
             transform = authoring.transform//,
             //animator = authoring.animator_;
         });
-        
+        AddComponent(enemyEntity, new MoveCD
+        {
+            speed = 3f
+        });
+        AddComponent(enemyEntity, new HPCD(10));
+        AddComponent(enemyEntity, new Tags.Enemy());
     }
 }

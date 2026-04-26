@@ -12,7 +12,6 @@ public partial struct CheckTargetPositionJob : IJobEntity
         if (movePathCD.IsArrived(nowPosition) == true)
         {
             movePathCD.SetNext();
-            JDebugLogger.Log("target", movePathCD.NowTargetPosition);
         }
     }
 }
