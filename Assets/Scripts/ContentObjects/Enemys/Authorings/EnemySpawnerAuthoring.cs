@@ -19,8 +19,8 @@ class EnemySpawnerAuthoringBaker : Baker<EnemySpawnerAuthoring>
 
         EnemyPrefabsSCD enemyPrefabsCD = new EnemyPrefabsSCD
         {
-            unitPrefab = GetEntity(authoring.enemyPrefab_, TransformUsageFlags.Dynamic),
-            parentEntity = GetEntity(authoring.enemyParentTransform_, TransformUsageFlags.Dynamic),
+            unit = GetEntity(authoring.enemyPrefab_, TransformUsageFlags.Dynamic),
+            unitParent = GetEntity(authoring.enemyParentTransform_, TransformUsageFlags.Dynamic),
         };
 
         Transform[] arrPosition = authoring.enemyMovePathTransforms_;

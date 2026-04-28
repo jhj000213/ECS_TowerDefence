@@ -3,7 +3,7 @@ using Unity.Entities;
 using Unity.Jobs;
 using Unity.Transforms;
 
-partial struct ToTargetMoveTowardSystem : ISystem
+partial struct MoveToPathSystem : ISystem
 {
     [BurstCompile]
     public void OnCreate(ref SystemState state)
@@ -16,7 +16,7 @@ partial struct ToTargetMoveTowardSystem : ISystem
     {
         CheckTargetPositionJob arrivedCheckJob = new CheckTargetPositionJob();
 
-        MoveTowardJob moveJob = new MoveTowardJob()
+        MoveToPathJob moveJob = new MoveToPathJob()
         {
             deltaTime = SystemAPI.Time.DeltaTime,
         };

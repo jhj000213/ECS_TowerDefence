@@ -10,7 +10,6 @@ class EnemyUnitAuthoringBaker : Baker<EnemyUnitAuthoring>
 {
     public override void Bake(EnemyUnitAuthoring authoring)
     {
-        JDebugLogger.Log("bake enemy");
         var enemyEntity = GetEntity(TransformUsageFlags.Dynamic);
 
         AddComponent(enemyEntity, new EnemyObjectCD 

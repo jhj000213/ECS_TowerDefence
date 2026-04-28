@@ -4,7 +4,7 @@ using Unity.Transforms;
 using UnityEngine;
 
 //[WithNone(typeof(FreezePositionCD))]
-public partial struct MoveTowardJob : IJobEntity
+public partial struct MoveToPathJob : IJobEntity
 {
     public float deltaTime;
 

@@ -6,11 +6,13 @@ public struct MovePathCD : IComponentData
 {
     FixedList64Bytes<float3> positions;
     int nowIndex;
+    bool isLoop;
 
-    public MovePathCD(FixedList64Bytes<float3> positionList)
+    public MovePathCD(FixedList64Bytes<float3> positionList, bool loop = true)
     {
         positions = positionList;
         nowIndex = 0;
+        isLoop = loop;
     }
 
     public float3 this[int index]
@@ -49,7 +51,14 @@ public struct MovePathCD : IComponentData
         nowIndex += 1;
         if (nowIndex >= positions.Length)
         {
-            nowIndex = 0;
+            if(isLoop == true)
+            {
+                nowIndex = 0;
+            }
+            else
+            {
+                nowIndex = positions.Length - 1;
+            }
         }
     }
 }
