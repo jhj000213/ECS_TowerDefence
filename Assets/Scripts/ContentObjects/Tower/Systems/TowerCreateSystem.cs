@@ -29,6 +29,11 @@ partial struct TowerCreateSystem : ISystem
 
             Entity newEntity1 = ecb.Instantiate(towerPrefabsCD.tower);
 
+            ecb.AddComponent(newEntity1, new TeamCD()
+            {
+                team = Team.TOWER,
+            });
+
             ecb.AddComponent(newEntity1, new Parent { Value = towerPrefabsCD.towerParent });
             ecb.SetComponent(newEntity1, LocalTransform.FromPosition(0,0,0));
 
@@ -43,7 +48,9 @@ partial struct TowerCreateSystem : ISystem
 
     void AddAttackComponent(ref EntityCommandBuffer ecb, ref Entity tower)
     {
-        ecb.AddComponent(tower, new AttackInfoCD(1.5f, 5f, 0.8f));
+        var attackObjPrefabsCD = SystemAPI.GetSingleton<AttackObjectPrefabsCD>();
+
+        ecb.AddComponent(tower, new AttackCD(1.5f, 5f, 0.8f, attackObjPrefabsCD.bullet));
     }
 
     [BurstCompile]

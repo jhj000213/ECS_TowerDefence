@@ -16,16 +16,22 @@ partial struct MoveToPathSystem : ISystem
     {
         CheckTargetPositionJob arrivedCheckJob = new CheckTargetPositionJob();
 
-        MoveToPathJob moveJob = new MoveToPathJob()
+        MoveToPathJob moveToPathJob = new MoveToPathJob()
+        {
+            deltaTime = SystemAPI.Time.DeltaTime,
+        };
+
+        MoveToTargetJob moveToTargetJob = new MoveToTargetJob()
         {
             deltaTime = SystemAPI.Time.DeltaTime,
         };
 
 
         JobHandle arriveHandle = arrivedCheckJob.ScheduleParallel(state.Dependency);
-        JobHandle moveHandle = moveJob.ScheduleParallel(arriveHandle);
+        JobHandle moveToPathHandle = moveToPathJob.ScheduleParallel(arriveHandle);
+        JobHandle moveToTargetHandle = moveToTargetJob.ScheduleParallel(moveToPathHandle);
 
-        state.Dependency = moveHandle;
+        state.Dependency = moveToTargetHandle;
     }
 
     [BurstCompile]

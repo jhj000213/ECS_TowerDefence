@@ -210,7 +210,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1206689956}
   m_Layer: 0
-  m_Name: BulletParent
+  m_Name: AttackObjectParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -240,8 +240,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1212684679}
+  - component: {fileID: 1212684680}
   m_Layer: 0
-  m_Name: BulletSpawner
+  m_Name: AttackObjectSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -262,6 +263,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1212684680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212684678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 500f9c399ca49fa488fc0f0604a62041, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objParentTransform_: {fileID: 1206689956}
+  bulletPrefab_: {fileID: -7413005830257243783, guid: 383b003b86df8fc46b217a51b90c8284,
+    type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

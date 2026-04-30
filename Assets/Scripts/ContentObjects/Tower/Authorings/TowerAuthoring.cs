@@ -16,7 +16,7 @@ class TowerAuthoringBaker : Baker<TowerAuthoring>
 
         AddComponent(towerEntity, new TowerCD
         {
-            bulletStartPosition = new float3(authoring.bulletStartPosition_)//,
+            bulletStartPosition = new float3(authoring.bulletStartPosition_.position)//,
             //animator = authoring.animator_;
         });
         AddComponent(towerEntity, new MoveCD

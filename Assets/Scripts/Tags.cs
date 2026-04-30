@@ -8,3 +8,7 @@ public struct Tags : IComponentData
 }
 
 
+public struct StateTags : IComponentData
+{
+    public struct AttackReady : IComponentData { }
+}

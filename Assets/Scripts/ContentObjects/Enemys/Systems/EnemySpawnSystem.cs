@@ -41,9 +41,6 @@ partial struct EnemySpawnSystem : ISystem
             elapsedTime -= spawnDelayTime;
 
 
-
-
-
             var ecbSingleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
 
             // 2. 이번 프레임에 사용할 '메모지(CommandBuffer)'를 하나 생성합니다.
@@ -51,6 +48,10 @@ partial struct EnemySpawnSystem : ISystem
             EntityCommandBuffer ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
             
             Entity newEntity1 = ecb.Instantiate(enemyPrefabsCD.unit);
+            ecb.AddComponent(newEntity1, new TeamCD()
+            {
+                team = Team.ENEMY,
+            });
             ecb.AddComponent(newEntity1, new MovePathCD(movePathCD.PositionList));
 
             ecb.AddComponent(newEntity1, new Parent { Value = enemyPrefabsCD.unitParent });
