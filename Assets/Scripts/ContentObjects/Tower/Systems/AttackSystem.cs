@@ -23,7 +23,8 @@ partial struct AttackSystem : ISystem
             attackCD.ValueRW.elapsedTime += SystemAPI.Time.DeltaTime;
             if (attackCD.ValueRO.IsCanAttack())
             {
-                ecb.AddComponent(entity, new StateTags.AttackReady());
+                ecb.SetComponentEnabled<StateTags.AttackReady>(entity, true);
+               // ecb.AddComponent(entity, new StateTags.AttackReady());
             }
         }
 

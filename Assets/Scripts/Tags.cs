@@ -10,5 +10,7 @@ public struct Tags : IComponentData
 
 public struct StateTags : IComponentData
 {
-    public struct AttackReady : IComponentData { }
+    public struct AttackReady : IComponentData, IEnableableComponent { }
+    public struct IsArrived : IComponentData, IEnableableComponent { }
+    public struct IsAlive : IComponentData, IEnableableComponent { }
 }

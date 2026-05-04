@@ -4,7 +4,6 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 
-[WithAll(typeof(StateTags.AttackReady))]
 public partial struct AttackJob : IJobEntity
 {
     public EntityCommandBuffer.ParallelWriter ecb;
@@ -19,14 +18,18 @@ public partial struct AttackJob : IJobEntity
     
 
     public void Execute(Entity entity, [EntityIndexInQuery] int sortKey,
-        in TowerCD towerCD, ref AttackCD attackCD, in TeamCD myTeamCD)
+        in TowerCD towerCD, ref AttackCD attackCD, in TeamCD myTeamCD, EnabledRefRW<StateTags.AttackReady> attackReady)
     {
         FindTarget(transformLookup[entity], myTeamCD);
 
         if (existTarget == false)
             return;
 
-        ecb.RemoveComponent<StateTags.AttackReady>(sortKey, entity);
+        if (attackCD.IsCanAttack() == false)
+            return;
+
+        attackReady.ValueRW = false;
+        //ecb.RemoveComponent<StateTags.AttackReady>(sortKey, entity);
 
         Entity newEntity = ecb.Instantiate(sortKey, attackCD.attackPrefab);
         ecb.AddComponent(sortKey, newEntity, new MoveTargetCD()
@@ -35,6 +38,20 @@ public partial struct AttackJob : IJobEntity
         });
         ecb.AddComponent(sortKey, newEntity, new Parent { Value = attackObjParent });
         ecb.SetComponent(sortKey, newEntity, LocalTransform.FromPosition(transformLookup[entity].Position + towerCD.bulletStartPosition));
+        ecb.AddComponent(sortKey, newEntity, new TargetEntityCD()
+        {
+            targetEntity = target
+        });
+        ecb.AddComponent(sortKey, newEntity, new BulletObjectCD()
+        {
+            damage = attackCD.damage
+        });
+        ecb.AddComponent(sortKey, newEntity, new TeamCD()
+        {
+            team = myTeamCD.team
+        });
+        ecb.AddComponent(sortKey, newEntity, new StateTags.IsArrived());
+        ecb.SetComponentEnabled<StateTags.IsArrived>(sortKey, newEntity, false);
 
         attackCD.OnAttack();
     }
@@ -52,7 +69,7 @@ public partial struct AttackJob : IJobEntity
             LocalTransform enemyTransform = transformLookup[enemy];
             TeamCD enemyTeam = teamLookup[enemy];
 
-            if (myTeamCD.team == enemyTeam.team)
+            if (myTeamCD.IsEqualTeam(enemyTeam))
                 continue;
 
             // 거리의 제곱(math.distancesq)을 사용해 연산 속도 최적화 (루트 연산 방지)

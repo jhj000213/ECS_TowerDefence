@@ -3,7 +3,7 @@ using Unity.Entities;
 using Unity.Jobs;
 using Unity.Transforms;
 
-partial struct MoveToPathSystem : ISystem
+partial struct MoveSystem : ISystem
 {
     [BurstCompile]
     public void OnCreate(ref SystemState state)

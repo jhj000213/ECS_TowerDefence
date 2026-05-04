@@ -16,7 +16,6 @@ partial struct TowerCreateSystem : ISystem
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            JDebugLogger.Log("?");
 
             var entityManager = state.EntityManager;
 
@@ -51,6 +50,9 @@ partial struct TowerCreateSystem : ISystem
         var attackObjPrefabsCD = SystemAPI.GetSingleton<AttackObjectPrefabsCD>();
 
         ecb.AddComponent(tower, new AttackCD(1.5f, 5f, 0.8f, attackObjPrefabsCD.bullet));
+
+        ecb.AddComponent(tower, new StateTags.AttackReady());
+        ecb.SetComponentEnabled<StateTags.AttackReady>(tower, false);
     }
 
     [BurstCompile]
