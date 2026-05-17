@@ -6,6 +6,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 
 [UpdateAfter(typeof(MoveSystem))]
+[UpdateBefore(typeof(EndSimulationEntityCommandBufferSystem))]
 partial struct BulletSystem : ISystem
 {
     private NativeArray<Entity> targetEntities;
@@ -20,24 +21,20 @@ partial struct BulletSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
 
-        var ecbSingleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
-        EntityCommandBuffer ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
+        //var ecbSingleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
+        //EntityCommandBuffer ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
+       
+        var endEcbSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
+        EntityCommandBuffer jobEcb = endEcbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
 
-        foreach (var (moveTarget, transform, entity) in SystemAPI.Query<RefRO<MoveTargetCD>, RefRO<LocalTransform>>().WithEntityAccess())
-        {
-            float3 targetPosition = moveTarget.ValueRO.targetPosition;
-            if (transform.ValueRO.Position.IsArrive(targetPosition) == true)
-            {
-                ecb.SetComponentEnabled<StateTags.IsArrived>(entity, true);
-            }
-        }
 
         BulletHitJob hitJob = new BulletHitJob()
         {
-            ecb = ecb.AsParallelWriter(),
+            ecb = jobEcb.AsParallelWriter(),
 
             teamLookup = SystemAPI.GetComponentLookup<TeamCD>(true),
             hpLookup = SystemAPI.GetComponentLookup<HPCD>(),
+            isAliveLookup = SystemAPI.GetComponentLookup<StateTags.IsAlive>(true),
             entityStorageLookup = state.GetEntityStorageInfoLookup(),
         };
 

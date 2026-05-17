@@ -2,7 +2,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 
-[WithAll(typeof(MoveCD))]
+[WithAll(typeof(MoveCD), typeof(StateTags.IsAlive))]
 public partial struct CheckTargetPositionJob : IJobEntity
 {
     public void Execute(in LocalTransform transform, ref MovePathCD movePathCD)

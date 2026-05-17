@@ -15,7 +15,7 @@ class BulletAuthoringBaker : Baker<BulletAuthoring>
 
         AddComponent(bullet, new MoveCD
         {
-            speed = 15f
+            speed = 7f
         });
         AddComponent(bullet, new Tags.Bullet());
 

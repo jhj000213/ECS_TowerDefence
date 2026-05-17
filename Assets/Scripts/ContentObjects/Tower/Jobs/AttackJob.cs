@@ -4,6 +4,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 
+[WithAll(typeof(StateTags.IsAlive))]
 public partial struct AttackJob : IJobEntity
 {
     public EntityCommandBuffer.ParallelWriter ecb;
@@ -50,8 +51,6 @@ public partial struct AttackJob : IJobEntity
         {
             team = myTeamCD.team
         });
-        ecb.AddComponent(sortKey, newEntity, new StateTags.IsArrived());
-        ecb.SetComponentEnabled<StateTags.IsArrived>(sortKey, newEntity, false);
 
         attackCD.OnAttack();
     }

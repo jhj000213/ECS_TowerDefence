@@ -12,7 +12,7 @@ partial struct HPSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        var ecbSingleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
+        var ecbSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
         EntityCommandBuffer ecb = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged);
 
         foreach (var (hpCD, entity) in SystemAPI.Query<RefRO<HPCD>>().WithEntityAccess())
@@ -20,6 +20,7 @@ partial struct HPSystem : ISystem
             if(hpCD.ValueRO.IsDead() == true)
             {
                 JDebugLogger.Log("Dead");
+                ecb.SetComponentEnabled<StateTags.IsAlive>(entity, false);
                 ecb.DestroyEntity(entity);
             }
         }

@@ -13,7 +13,7 @@ public partial struct MoveToPathJob : IJobEntity
     {
         float3 targetPosition = movePathCD.NowTargetPosition;
         float3 dis = targetPosition - transform.Position;
-        bool isArrived = transform.Position.IsArrive(targetPosition);
+        bool isArrived = transform.Position.IsNearby(targetPosition);
 
         if (isArrived == true)
             return;

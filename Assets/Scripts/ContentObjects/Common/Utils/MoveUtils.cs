@@ -4,10 +4,10 @@ using Unity.Transforms;
 
 public static class MoveUtils
 {
-    public static bool IsArrive(this in float3 nowPosition, in float3 targetPosition)
+    public static bool IsNearby(this in float3 nowPosition, in float3 targetPosition, float distance = 0.1f)
     {
         float3 dis = targetPosition - nowPosition;
-        if (math.length(dis) < 0.08f)
+        if (math.length(dis) < distance)
         {
             return true;
         }
